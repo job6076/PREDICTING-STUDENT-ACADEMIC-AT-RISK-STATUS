@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Risk Predictor - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; --primary-light: #3b82f6;
+            --dark: #0f172a; --card: #1e293b; --card2: #162032; --border: #334155;
+            --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--dark), var(--card2));
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .logo-area { text-align: center; margin-bottom: 30px; }
+        .logo-icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 16px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-bottom: 15px;
+            box-shadow: 0 0 30px rgba(37,99,235,0.4);
+        }
+        h1 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        p.subtitle { color: var(--muted); font-size: 14px; }
+        .tab-switch {
+            display: flex; margin-bottom: 25px;
+            background: rgba(255,255,255,0.05); border-radius: 10px; padding: 4px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px; background: transparent; border: none;
+            color: var(--muted); font-family: 'DM Sans', sans-serif;
+            font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s;
+        }
+        .tab-btn.active { background: var(--primary); color: white; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 12px; font-weight: 700; color: var(--muted);
+            text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.05em;
+        }
+        .form-control {
+            width: 100%; padding: 12px 16px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); font-size: 14px; transition: all 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); background: rgba(37,99,235,0.1); }
+        .form-control.error { border-color: var(--danger); }
+        .btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none; border-radius: 8px; color: white;
+            font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: transform 0.1s;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .msg-box {
+            padding: 10px; border-radius: 6px; margin-bottom: 15px;
+            font-size: 13px; text-align: center; display: none;
+        }
+        .msg-box.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; display: block; }
+        .msg-box.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7; display: block; }
+
+        .strength-meter { height: 4px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+        .strength-fill { height: 100%; width: 0%; transition: width 0.3s, background 0.3s; }
+
+        .helper-text { font-size: 11px; color: var(--muted); margin-top: 4px; display: block; }
+        .helper-text.error { color: var(--danger); }
+        .helper-text.success { color: var(--success); }
+
+        .spinner {
+            width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.6s linear infinite; display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="logo-area">
+        <div class="logo-icon">🎓</div>
+        <h1>Risk Predictor</h1>
+        <p class="subtitle">Secure Academic Analytics</p>
+    </div>
+
+    <div id="msg-box" class="msg-box"></div>
+
+    <div class="tab-switch">
+        <button class="tab-btn active" id="login-tab" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" id="register-tab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+            <label>Username or Email</label>
+            <input type="text" class="form-control" id="login-username" placeholder="Enter username or email" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" id="login-password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="btn" id="login-btn">Login</button>
+    </form>
+
+    <!-- Register Form -->
+    <form id="register-form" style="display:none" onsubmit="handleRegister(event)">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" id="reg-username" placeholder="Min 5 chars (letters, numbers, _ .)" required oninput="validateField('username')">
+            <span id="user-help" class="helper-text"></span>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" id="reg-email" placeholder="user@example.com" required oninput="validateField('email')">
+            <span id="email-help" class="helper-text"></span>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" id="reg-password" placeholder="Create strong password" required oninput="checkPasswordStrength()">
+            <div class="strength-meter"><div class="strength-fill" id="strength-fill"></div></div>
+            <span id="pass-help" class="helper-text">Min 8 chars, Upper, Lower, Number, Special (!@#$%^&*)</span>
+        </div>
+        <button type="submit" class="btn" id="reg-btn">Create Account</button>
+    </form>
+</div>
+
+<script>
+    function switchTab(tab) {
+        document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+        document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+        document.getElementById('login-tab').classList.toggle('active', tab === 'login');
+        document.getElementById('register-tab').classList.toggle('active', tab === 'register');
+        hideMsg();
+    }
+
+    function showMsg(msg, type) {
+        const box = document.getElementById('msg-box');
+        box.textContent = msg;
+        box.className = `msg-box ${type}`;
+    }
+
+    function hideMsg() { document.getElementById('msg-box').className = 'msg-box'; }
+
+    function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        btn.disabled = loading;
+        btn.innerHTML = loading ? '<div class="spinner"></div>' : (btnId === 'login-btn' ? 'Login' : 'Create Account');
+    }
+
+    // Real-time Validation
+    function validateField(field) {
+        const val = document.getElementById(`reg-${field}`).value;
+        const help = document.getElementById(`${field === 'username' ? 'user' : 'email'}-help`);
+        let valid = false;
+
+        if (field === 'username') {
+            const regex = /^[a-zA-Z0-9_.]{5,}$/;
+            if(!val) { help.textContent = ""; return; }
+            if (val === ".." || !regex.test(val)) {
+                help.textContent = "Invalid format (Min 5 chars, letters, numbers, _ .)";
+                help.className = "helper-text error";
+            } else {
+                help.textContent = "Looks good!";
+                help.className = "helper-text success";
+                valid = true;
+            }
+        } else if (field === 'email') {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!val) { help.textContent = ""; return; }
+            if (!regex.test(val)) {
+                help.textContent = "Invalid email format.";
+                help.className = "helper-text error";
+            } else {
+                help.textContent = "Valid email.";
+                help.className = "helper-text success";
+                valid = true;
+            }
+        }
+        return valid;
+    }
+
+    function checkPasswordStrength() {
+        const pass = document.getElementById('reg-password').value;
+        const fill = document.getElementById('strength-fill');
+        const help = document.getElementById('pass-help');
+        let strength = 0;
+        if (pass.length >= 8) strength++;
+        if (/[A-Z]/.test(pass)) strength++;
+        if (/[a-z]/.test(pass)) strength++;
+        if (/[0-9]/.test(pass)) strength++;
+        if (/[!@#$%^&*]/.test(pass)) strength++;
+
+        const colors = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#10b981'];
+        const widths = ['20%', '40%', '60%', '80%', '100%'];
+
+        fill.style.width = pass.length > 0 ? widths[strength-1] || '10%' : '0%';
+        fill.style.background = colors[strength-1] || '#ef4444';
+
+        if (strength < 5) {
+            help.textContent = "Add: " +
+                (pass.length < 8 ? "8+ chars, " : "") +
+                (!/[A-Z]/.test(pass) ? "Uppercase, " : "") +
+                (!/[0-9]/.test(pass) ? "Number, " : "") +
+                (!/[!@#$%^&*]/.test(pass) ? "Special char" : "");
+            help.className = "helper-text error";
+        } else {
+            help.textContent = "Strong password!";
+            help.className = "helper-text success";
+        }
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        setLoading('login-btn', true);
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
+            });
+            const data = await res.json();
+
+            if (data.ok) {
+                window.location.href = "/dashboard";
+            } else {
+                showMsg(data.error || 'Invalid username or password', 'error');
+            }
+        } catch (err) {
+            showMsg('Network error', 'error');
+        }
+        setLoading('login-btn', false);
+    }
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        setLoading('reg-btn', true);
+        const username = document.getElementById('reg-username').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, email, password})
+            });
+            const data = await res.json();
+
+            if (data.ok) {
+                showMsg('Account created! Please login.', 'success');
+                setTimeout(() => switchTab('login'), 1500);
+            } else {
+                showMsg(data.message || 'Registration failed', 'error');
+            }
+        } catch(err) {
+            showMsg('Network error', 'error');
+        }
+        setLoading('reg-btn', false);
+    }
+</script>
+</body>
+</html>
