@@ -123,7 +123,6 @@ The uploaded CSV file must contain:
 | Resource_Access_Count | Number of resources accessed |
 | Assessment_Score | Student assessment average |
 
----
 
 # How To Run The System
 
@@ -135,3 +134,62 @@ Install required packages:
 
 ```bash
 pip install pandas numpy scikit-learn matplotlib
+````
+
+## Step 3
+
+Run the application:
+
+```bash
+python main.py
+```
+
+# Expected Output
+
+The system:
+
+* predicts student academic risk status
+* visualizes student risk distribution
+* generates analytical reports
+* assists institutions in proactive intervention
+
+---
+
+# Authors
+
+Group 4 – Meru University of Science and Technology
+
+| Registration Number | Name |
+|---|---|
+| CT203/113832/23 | KIPCHUMBA KIBET JOB |
+| CT203/113815/23 | JOHN LOBUIN OME |
+| CT203/113824/23 | KENNEDY ODUOR |
+| CT203/113835/23 | EUNICE NJERI |
+| CT203/100833/19 | MICHAEL MAUNDU |
+| CT203/109445/22 | JACKSON JUMA |
+| CT203/113788/23 | GIDEON MUHORO |
+
+# Supervisor
+
+Dr. Mwenda Gichuru
+
+---
+
+# Academic Year
+
+2025/2026
+
+---
+
+# License
+
+This project is for academic and research purposes only.
+
+```
+
+After saving:
+
+1. Put this `README.md` in the main project folder
+2. Upload everything to GitHub
+3. GitHub will automatically display the README beautifully on the repository homepage.
+```
